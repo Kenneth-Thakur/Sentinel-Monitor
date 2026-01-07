@@ -18,5 +18,5 @@ A real-time dashboard for monitoring global conflict signals. Utilizes a rule-ba
 
 ## How to Run
 1. Clone the repository: `git clone https://github.com/Kenneth-Thakur/Sentinel-Monitor.git`
-2. Install dependencies: `pip install dash pandas requests feedparser plotly`
+2. Install dependencies: `pip install dash pandas requests feedparser plotly pytz`
 3. Run the application: `python sentinel_final.py`
