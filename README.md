@@ -1,6 +1,6 @@
 # Sentinel: Geopolitical Conflict Monitor
 
-A real-time dashboard for monitoring global conflict signals. Utilizes a custom NLP pipeline to scrub high-velocity news feeds and reconstruct fragmented headlines into formal tactical SITREPs, enabling early detection of emerging regional instability.
+A real-time dashboard for monitoring global conflict signals. Utilizes a rule-based NLP pipeline to scrub high-velocity news feeds and reconstruct fragmented headlines into formal tactical SITREPs, enabling early detection of emerging regional instability.
 
 ## Dashboard Preview
 ![Dashboard Screenshot](sentinel_ds_hero.png)
