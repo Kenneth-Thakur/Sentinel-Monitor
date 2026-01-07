@@ -13,7 +13,7 @@ A real-time dashboard for monitoring global conflict signals. Utilizes a rule-ba
 
 ## Core Functionality
 - **Real-time Monitoring:** Automated scraping of global conflict signals from RSS feeds.
-- **SITREP Generation:** A custom NLP engine that reconstructs fragmented news headlines into subject-led tactical SITREPs.
+- **SITREP Generation:** A rule-based NLP engine that reconstructs fragmented news headlines into subject-led tactical SITREPs.
 - **Geospatial Mapping:** A real-time heatmap distribution of global conflict "signals" and risk levels.
 
 ## How to Run
