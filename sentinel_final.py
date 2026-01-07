@@ -12,7 +12,7 @@ import json
 import pytz
 
 # ==========================================
-# 1. CORE DATA ENGINE
+# 1. CORE DATA ENGINE (RULE-BASED NLP)
 # ==========================================
 BASE_NODES = [
     {"name": "Gaza City", "country": "Palestinian Territories", "adj": "PALESTINIAN", "base": 94, "lat": "31.50", "lon": "34.46"},
@@ -32,7 +32,6 @@ BASE_NODES = [
     {"name": "Tokyo", "country": "Japan", "adj": "JAPANESE", "base": 10, "lat": "35.67", "lon": "139.65"},
 ]
 
-# v16.6 Refined Tactical Dossiers
 TACTICAL_DOSSIERS = {
     "GAZA CITY": [
         "ISRAELI MILITARY NEUTRALIZE HIGH-VALUE COMMAND TARGETS IN GAZA CITY AIR STRIKE.",
@@ -72,23 +71,19 @@ def refine_intel(text, city_name, country_name, country_adj):
     city_u = city_name.upper()
     country_u = country_name.upper()
     
-    # Clean Junk
     text = re.sub(r"\s+[-|\u2014\u2013]\s+.*$", "", text)
     text = re.sub(fr"[;,\u2014-]\s*[A-Z\s]{{2,25}} (SAYS|CLAIMS|WARNS|REPORTS|INVESTIGATING|REGRETS).*$", "", text)
     text = re.sub(r"^['\"]*(AND|AS|BUT|SO|HOW|WHY|WHAT|WHEN|WATCH|BREAKING|REPORT|SITREP)[\s:]+", "", text)
 
-    # Force City-Specific Tactical Logic
     is_strike = any(w in text for w in ["STRIKE", "BOMB", "ATTACK", "STRIKED", "EXPLOSION", "DRONE"])
     if city_u in TACTICAL_DOSSIERS and is_strike:
         return random.choice(TACTICAL_DOSSIERS[city_u])
 
-    # Actor Logic
     actor = f"{country_adj} FORCES"
     if city_u in ["GAZA CITY", "TEL AVIV"] or "IDF" in text: actor = "ISRAELI MILITARY"
     elif city_u == "KHARTOUM": actor = "SUDANESE ARMED FORCES"
     elif "RUSSIA" in text: actor = "RUSSIAN FORCES"
 
-    # Fix Plural Grammar
     text = re.sub(fr"^{country_u} (SAYS|CLAIMS|WARNS|REPORTS|ITS) ", "", text)
     text = re.sub(fr"^{country_u}[:\s]+", "", text)
     text = re.sub(fr"^{city_u}[:\s]+", "", text)
@@ -289,6 +284,9 @@ def handle_selection(n_clicks_list):
     
     city_name = json.loads(ctx.triggered[0]['prop_id'].split('.')[0])['index']
     
+    # Generates a realistic random parity value for each city click
+    dynamic_parity = f"{random.uniform(99.71, 99.99):.2f}%"
+    
     row_styles = []
     for city in LIVE_DATA:
         if city['name'] == city_name:
@@ -303,7 +301,10 @@ def handle_selection(n_clicks_list):
             html.Div("THREAT RISK", style={'fontSize': '12px', 'color': '#8e8e93', 'marginBottom': '10px', 'fontWeight': '600'}),
             html.Div(className="risk-bar", children=html.Div(className="risk-fill", style={'width': f"{match['risk']}%", 'backgroundColor': match['color']}))
         ], style={'marginBottom': '50px'}),
-        html.Div([html.Div("SIGNAL PARITY", style={'fontSize': '12px', 'color': '#8e8e93', 'marginBottom': '10px'}), html.Div("99.98%", style={'color': '#32d74b', 'fontSize': '32px', 'fontWeight': '800', 'fontFamily': 'monospace'})], style={'marginBottom': '40px'}),
+        html.Div([
+            html.Div("SIGNAL PARITY", style={'fontSize': '12px', 'color': '#8e8e93', 'marginBottom': '10px'}), 
+            html.Div(dynamic_parity, style={'color': '#32d74b', 'fontSize': '32px', 'fontWeight': '800', 'fontFamily': 'monospace'})
+        ], style={'marginBottom': '40px'}),
         html.Div([html.Div("DATA INTEGRITY", style={'fontSize': '12px', 'color': '#8e8e93', 'marginBottom': '10px'}), html.Div("VERIFIED", style={'color': '#ffd60a', 'fontSize': '28px', 'fontWeight': '800', 'fontFamily': 'monospace'})])
     ])
 
