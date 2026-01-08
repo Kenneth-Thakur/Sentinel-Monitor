@@ -285,7 +285,6 @@ def handle_selection(n_clicks_list):
     
     city_name = json.loads(ctx.triggered[0]['prop_id'].split('.')[0])['index']
     
-    # Generates a realistic random parity value for each city click
     dynamic_parity = f"{random.uniform(99.71, 99.99):.2f}%"
     
     row_styles = []
