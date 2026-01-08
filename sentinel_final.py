@@ -70,7 +70,8 @@ def refine_intel(text, city_name, country_name, country_adj):
     text = text.upper()
     city_u = city_name.upper()
     country_u = country_name.upper()
-    
+
+    # REMOVE SOURCE ATTRIBUTIONS
     text = re.sub(r"\s+[-|\u2014\u2013]\s+.*$", "", text)
     text = re.sub(fr"[;,\u2014-]\s*[A-Z\s]{{2,25}} (SAYS|CLAIMS|WARNS|REPORTS|INVESTIGATING|REGRETS).*$", "", text)
     text = re.sub(r"^['\"]*(AND|AS|BUT|SO|HOW|WHY|WHAT|WHEN|WATCH|BREAKING|REPORT|SITREP)[\s:]+", "", text)
