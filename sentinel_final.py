@@ -139,7 +139,8 @@ def fetch_real_intelligence():
                         if candidate != "NULL_SIGNAL":
                             final_intel = candidate
                             break
-            except: pass
+            except Exception as e:
+                print(f"Error: {e}")
         
         if not final_intel:
             final_intel = STATUS_REPORTS.get(name, f"SECTOR MONITORING: {name.upper()} DATA STREAM REMAINS NOMINAL.")
