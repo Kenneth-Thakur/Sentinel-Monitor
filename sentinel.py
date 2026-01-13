@@ -130,7 +130,7 @@ def fetch_real_intelligence():
 
         if name not in MONITOR_ONLY:
             try:
-                query = f"%22{name}%22+(Military+OR+Conflict+OR+Strike+OR+Strike)"
+                query = f"%22{name}%22+(Military+OR+Conflict+OR+Strike+OR+Attack)"
                 url = f"https://news.google.com/rss/search?q={query}&hl=en-US&gl=US&ceid=US:en"
                 r = requests.get(url, headers=headers, timeout=5)
                 feed = feedparser.parse(r.content)
