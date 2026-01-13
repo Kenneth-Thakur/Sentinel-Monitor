@@ -14,7 +14,7 @@ A real-time dashboard for monitoring global conflict signals. Utilizes a rule-ba
 ## Core Functionality
 - **Real-time Monitoring:** Automated scraping of global conflict signals from RSS feeds.
 - **SITREP Generation:** A rule-based NLP engine that reconstructs fragmented news headlines into subject-led tactical SITREPs.
-- **Strategic Node Monitoring:** A real-time risk distribution of global conflict "signals" and risk levels.
+- **Global Node Grid:** Tracks real-time intelligence across 15 strategic coordinates (Lat/Lon) with automated risk scoring
 
 ## How to Run
 1. Clone the repository: `git clone https://github.com/Kenneth-Thakur/Sentinel-Monitor.git`
