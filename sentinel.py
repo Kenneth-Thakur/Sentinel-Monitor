@@ -15,9 +15,9 @@ import pytz
 # 1. CORE DATA ENGINE (RULE-BASED NLP)
 # ==========================================
 BASE_NODES = [
-    {"name": "Gaza City", "country": "Palestinian Territories", "adj": "PALESTINIAN", "base": 94, "lat": "31.50", "lon": "34.46"},
-    {"name": "Tel Aviv", "country": "Israel", "adj": "ISRAELI", "base": 82, "lat": "32.08", "lon": "34.78"},
-    {"name": "Kyiv", "country": "Ukraine", "adj": "UKRAINIAN", "base": 88, "lat": "50.45", "lon": "30.52"},
+    {"name": "Gaza City", "country": "Palestinian Territories", "adj": "PALESTINIAN", "base": 90, "lat": "31.50", "lon": "34.46"},
+    {"name": "Tel Aviv", "country": "Israel", "adj": "ISRAELI", "base": 80, "lat": "32.08", "lon": "34.78"},
+    {"name": "Kyiv", "country": "Ukraine", "adj": "UKRAINIAN", "base": 85, "lat": "50.45", "lon": "30.52"},
     {"name": "Sydney", "country": "Australia", "adj": "AUSTRALIAN", "base": 12, "lat": "-33.86", "lon": "151.20"},
     {"name": "Khartoum", "country": "Sudan", "adj": "SUDANESE", "base": 85, "lat": "15.50", "lon": "32.55"},
     {"name": "Tehran", "country": "Iran", "adj": "IRANIAN", "base": 75, "lat": "35.68", "lon": "51.38"},
@@ -126,7 +126,7 @@ def fetch_real_intelligence():
 
     for node in BASE_NODES:
         name = node['name']
-        score = node['base']
+        base_score = node['base']
         final_intel = ""
         is_fallback = False
 
@@ -143,7 +143,7 @@ def fetch_real_intelligence():
                             final_intel = candidate
                             break
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"Error fetching {name}: {e}")
         
         if not final_intel:
             final_intel = STATUS_REPORTS.get(name, f"SECTOR MONITORING: {name.upper()} DATA STREAM REMAINS NOMINAL.")
@@ -151,7 +151,24 @@ def fetch_real_intelligence():
         
         if not final_intel.endswith("."): final_intel += "."
 
-        status_label, color, final_score = get_status_info(score, is_fallback)
+        # --- DYNAMIC RISK SCORING ENGINE ---
+        current_score = base_score
+        if not is_fallback:
+            # Analyze intelligence string for escalation markers
+            risk_boost = 0
+            u_intel = final_intel.upper()
+            
+            # Weighted keywords for automated risk adjustment
+            if any(x in u_intel for x in ["MISSILE", "ROCKET", "ARTILLERY", "AIRSTRIKE"]): risk_boost += 8
+            if any(x in u_intel for x in ["CASUALTIES", "KILLED", "DEAD", "FATAL"]): risk_boost += 12
+            if any(x in u_intel for x in ["NUCLEAR", "CHEMICAL", "BIOLOGICAL"]): risk_boost += 25
+            if any(x in u_intel for x in ["WAR", "INVASION", "MOBILIZATION"]): risk_boost += 10
+            
+            current_score += risk_boost
+            if current_score > 100: current_score = 100
+        # -----------------------------------
+
+        status_label, color, final_score = get_status_info(current_score, is_fallback)
 
         processed_data.append({
             "name": name, "country": node['country'], "intel": final_intel,
