@@ -9,7 +9,7 @@ A real-time dashboard for monitoring global conflict signals. Utilizes a rule-ba
 - **Language:** Python 3.10+
 - **Framework:** Plotly Dash (Interactive Visualization)
 - **Data Processing:** Pandas, RegEx (Rule-Based NLP Logic)
-- **Data Source:** RSS Feeds & Live News Integration
+- **Data Source:** Automated Google News RSS Aggregation
 
 ## Core Functionality
 - **Real-time Monitoring:** Automated scraping of global conflict signals from RSS feeds.
