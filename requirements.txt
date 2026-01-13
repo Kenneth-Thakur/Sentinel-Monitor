@@ -1,6 +1,7 @@
 dash
-pandas
-requests
-feedparser
 plotly
+pandas
+feedparser
+requests
 pytz
+lxml
