@@ -77,6 +77,8 @@ def refine_intel(text, city_name, country_name, country_adj):
     text = re.sub(r"^['\"]*(AND|AS|BUT|SO|HOW|WHY|WHAT|WHEN|WATCH|BREAKING|REPORT|SITREP)[\s:]+", "", text)
 
     is_strike = any(w in text for w in ["STRIKE", "BOMB", "ATTACK", "STRIKED", "EXPLOSION", "DRONE"])
+
+    # IF A REAL ATTACK IS DETECTED IN RSS, SWAP IT FOR A CLEANER, "PRE-WRITTEN" MILITARY FORMAT
     if city_u in TACTICAL_DOSSIERS and is_strike:
         return random.choice(TACTICAL_DOSSIERS[city_u])
 
