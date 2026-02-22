@@ -10,6 +10,7 @@ import requests
 import re
 import json
 import pytz
+import sqlite3
 
 # ==========================================
 # 1. CORE DATA ENGINE (RULE-BASED NLP)
@@ -178,7 +179,31 @@ def fetch_real_intelligence():
         })
     return sorted(processed_data, key=lambda x: x['risk'], reverse=True)
 
-LIVE_DATA = fetch_real_intelligence()
+def store_intelligence(data):
+    conn = sqlite3.connect("sentinel_intel.db")
+    c = conn.cursor()
+    c.execute("DROP TABLE IF EXISTS live_intel")
+    c.execute("""CREATE TABLE live_intel (
+        name TEXT, country TEXT, intel TEXT, source TEXT,
+        risk INTEGER, status TEXT, color TEXT, lat TEXT, lon TEXT
+    )""")
+    for d in data:
+        c.execute("INSERT INTO live_intel VALUES (?,?,?,?,?,?,?,?,?)",
+                  (d['name'], d['country'], d['intel'], d['source'],
+                   d['risk'], d['status'], d['color'], d['lat'], d['lon']))
+    conn.commit()
+    conn.close()
+
+def load_intelligence():
+    conn = sqlite3.connect("sentinel_intel.db")
+    c = conn.cursor()
+    rows = c.execute("SELECT name, country, intel, source, risk, status, color, lat, lon FROM live_intel ORDER BY risk DESC").fetchall()
+    conn.close()
+    return [{"name": r[0], "country": r[1], "intel": r[2], "source": r[3],
+             "risk": r[4], "status": r[5], "color": r[6], "lat": r[7], "lon": r[8]} for r in rows]
+
+store_intelligence(fetch_real_intelligence())
+LIVE_DATA = load_intelligence()
 
 # ==========================================
 # 2. DASHBOARD UI
