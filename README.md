@@ -8,12 +8,12 @@ A real-time dashboard that monitors 54 global conflict zones using RSS feeds, NL
 ## Technical Stack
 - **Language:** Python 3.10+
 - **Framework:** Plotly Dash (Interactive Visualization)
-- **Data Processing:** Pandas, RegEx (Rule-Based NLP Logic)
+- **Data Processing:** Pandas, NLTK, RegEx (Rule-Based NLP Logic)
 - **Data Source:** Automated Google News RSS Aggregation
 
 ## Core Functionality
 - **Real-time Monitoring:** Automated scraping of global conflict signals from RSS feeds.
-- **SITREP Generation:** A rule-based NLP engine that reconstructs fragmented news headlines into subject-led tactical SITREPs.
+- **SITREP Generation:** Generates daily situation reports with threat summaries and regional breakdowns.
 - **Global Node Grid:** Tracks real-time intelligence across 54 global conflict zones with automated risk scoring.
 
 ## How to Run
